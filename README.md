@@ -2,7 +2,7 @@
 
 ## Table of contents
 1. [SQL various commands](#sql-various-commands)
-2. [Configuring sqlplus sessions](#configuring sqlplus sessions)
+2. [Configuring sqlplus sessions](#configuring-sqlplus-sessions)
 
 ### SQL various commands
 
