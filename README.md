@@ -7,8 +7,9 @@
 ### SQL various commands
 
 * List available procedures for the given package
-
+~~~
 SELECT PROCEDURE_NAME, OWNER, OBJECT_NAME FROM DBA_PROCEDURES WHERE OBJECT_NAME=PACKAGE_NAME
+~~~
 
 * Check size of segments
 ~~~
@@ -28,30 +29,30 @@ SELECT S.OWNER "owner", NVL(S.SEGMENT_NAME, 'TABLE TOTAL SIZE') "segment_name",
 
 * Last activity time on a given table
 ~~~
-select max(ora_rowscn), scn_to_timestamp(max(ora_rowscn)) from OWNER_NAME.TABLE_NAME;
+SELECT MAX(ORA_ROWSCN), SCN_TO_TIMESTAMP(MAX(ORA_ROWSCN)) from OWNER_NAME.TABLE_NAME;
 ~~~
 
 * Useful information about running sqls
 ~~~
-select * from (
-    select p.spid "ospid", (se.SID),ss.serial#,ss.SQL_ID,ss.username,substr(ss.program,1,22) "program",
-    ss.module,ss.osuser,ss.MACHINE,ss.status, se.VALUE/100 cpu_usage_sec
-    from
-        v$session ss,
-        v$sesstat se,
-        v$statname sn,
-        v$process p
-    where
-        se.STATISTIC# = sn.STATISTIC#
-        and
-        NAME like '%CPU used by this session%'
-        and
-        se.SID = ss.SID
-        and ss.username !='SYS' and
-        ss.status='ACTIVE'
-        and ss.username is not null
-        and ss.paddr=p.addr and value > 0
-    order by se.VALUE desc);
+SELECT * FROM (
+    SELECT P.SPID "OSPID", (SE.SID),SS.SERIAL#,SS.SQL_ID,SS.USERNAME,SUBSTR(SS.PROGRAM,1,22) "PROGRAM",
+    SS.MODULE,SS.OSUSER,SS.MACHINE,SS.STATUS, SE.VALUE/100 CPU_USAGE_SEC
+    FROM
+        V$SESSION SS,
+        V$SESSTAT SE,
+        V$STATNAME SN,
+        V$PROCESS P
+    WHERE
+        SE.STATISTIC# = SN.STATISTIC#
+        AND
+        NAME LIKE '%cpu USED BY THIS SESSION%'
+        AND
+        SE.SID = SS.SID
+        AND SS.USERNAME !='sys' AND
+        SS.STATUS='active'
+        AND SS.USERNAME IS NOT NULL
+        AND SS.PADDR=P.ADDR AND VALUE > 0
+    ORDER BY SE.VALUE DESC);
 ~~~
 
 * Number of rows per partition of a table
@@ -126,7 +127,6 @@ BEGIN
 END;
 /
 ~~~
-
 
 
 ### Configuring sqlplus sessions
